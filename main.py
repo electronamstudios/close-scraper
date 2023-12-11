@@ -16,8 +16,6 @@ for i in range(tickerCount):
 
 print("\nGenerating URLs for " + str(tickerList) + "\n")
 
-list(tickerList)
-
 for i in range(len(tickerList)):
     try:
         URL = "https://query1.finance.yahoo.com/v7/finance/download/" + tickerList[i] + "?period1=" + str(timeStart) + "&period2=" + str(timeEnd) + "&interval=1d&events=history&includeAdjustedClose=true"
