@@ -5,8 +5,8 @@
 
 import requests,time,datetime,urllib
 
-timeStart = int(time.mktime(datetime.datetime.strptime(input("Starting Date (%d/%m/yyyy): "), "%d/%m/%Y").timetuple()))
-timeEnd = int(time.mktime(datetime.datetime.strptime(input("Ending Date (%d/%m/yyyy): "), "%d/%m/%Y").timetuple()))
+timeStart = int(time.mktime(datetime.datetime.strptime(input("Starting Date (%d/%m/%y): "), "%d/%m/%Y").timetuple()))
+timeEnd = int(time.mktime(datetime.datetime.strptime(input("Ending Date (%d/%m/%y): "), "%d/%m/%Y").timetuple()))
 
 tickerCount = int(input("How many tickers do you want: "))
 tickerList = []
