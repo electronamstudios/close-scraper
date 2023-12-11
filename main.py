@@ -4,7 +4,6 @@
 #                                       change that for the wanted ticker
 
 import requests, datetime, urllib
-from bs4 import BeautifulSoup
 
 timeStart = int(input("Starting Date: ")) # unix timecode
 timeEnd = int(input("Ending Date: "))  # unix timecode
