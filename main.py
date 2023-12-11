@@ -6,8 +6,8 @@
 import requests, datetime, urllib
 from bs4 import BeautifulSoup
 
-timeStart = "" # unix timecode
-timeEnd = "" # unix timecode
+timeStart = int(input("Starting Date: ")) # unix timecode
+timeEnd = int(input("Ending Date: "))  # unix timecode
 
 tickerCount = int(input("How many tickers do you want: "))
 tickerList = []
@@ -17,3 +17,7 @@ for i in range(tickerCount):
     tickerList.append(ticker)
 
 print(tickerList)
+
+for i in tickerList:
+    url = "https://query1.finance.yahoo.com/v7/finance/download/" + tickerList[i] + "?period1=" + timeStart + "&period2=" + timeEnd + "&interval=1d&events=history&includeAdjustedClose=true"
+    print(url)
