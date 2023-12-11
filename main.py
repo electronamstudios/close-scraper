@@ -1,3 +1,4 @@
+import os
 import time
 import datetime
 from urllib.request import urlretrieve
@@ -20,4 +21,8 @@ list(tickerList)
 for i in range(len(tickerList)):
     URL = "https://query1.finance.yahoo.com/v7/finance/download/" + tickerList[i] + "?period1=" + str(timeStart) + "&period2=" + str(timeEnd) + "&interval=1d&events=history&includeAdjustedClose=true"
     print("Retrieving " + tickerList[i] + " from " + URL + "\n")
-    urlretrieve(URL, tickerList[i] + ".csv")
+
+    if not os.path.exists('./temp'):
+        os.makedirs('./temp')
+
+    urlretrieve(URL, "./temp/" + tickerList[i] + ".csv")
