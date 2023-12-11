@@ -3,10 +3,10 @@
 #                                                       |
 #                                       change that for the wanted ticker
 
-import requests, datetime, urllib
+import requests,time,datetime,urllib
 
-timeStart = int(input("Starting Date: ")) # unix timecode
-timeEnd = int(input("Ending Date: "))  # unix timecode
+timeStart = int(time.mktime(datetime.datetime.strptime(input("Starting Date (%d/%m/yyyy): "), "%d/%m/%Y").timetuple()))
+timeEnd = int(time.mktime(datetime.datetime.strptime(input("Ending Date (%d/%m/yyyy): "), "%d/%m/%Y").timetuple()))
 
 tickerCount = int(input("How many tickers do you want: "))
 tickerList = []
