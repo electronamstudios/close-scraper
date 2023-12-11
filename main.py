@@ -12,12 +12,13 @@ timeEnd = int(input("Ending Date: "))  # unix timecode
 tickerCount = int(input("How many tickers do you want: "))
 tickerList = []
 
+print("\n(uppercase not required)")
 for i in range(tickerCount):
     ticker = input("Enter ticker name: ").upper()
     tickerList.append(ticker)
 
-print(tickerList)
+print("\nGenerating URLs for " + str(tickerList) + "\n")
 
-for i in tickerList:
-    url = "https://query1.finance.yahoo.com/v7/finance/download/" + tickerList[i] + "?period1=" + timeStart + "&period2=" + timeEnd + "&interval=1d&events=history&includeAdjustedClose=true"
+for i in range(len(tickerList)):
+    url = "https://query1.finance.yahoo.com/v7/finance/download/" + tickerList[i] + "?period1=" + str(timeStart) + "&period2=" + str(timeEnd) + "&interval=1d&events=history&includeAdjustedClose=true"
     print(url)
