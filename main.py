@@ -9,9 +9,8 @@ timeEnd = int(time.mktime(datetime.datetime.strptime(input("Ending Date (%d/%m/%
 tickerCount = int(input("\nHow many tickers do you want: "))
 tickerList = []
 
-print("\n(uppercase not required)")
 for i in range(tickerCount):
-    ticker = input("Enter ticker name: ").upper()
+    ticker = input("Ticker name: ").upper()
     tickerList.append(ticker)
 
 print("\nGenerating URLs for " + str(tickerList) + "\n")
