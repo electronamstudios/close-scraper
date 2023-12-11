@@ -19,10 +19,13 @@ print("\nGenerating URLs for " + str(tickerList) + "\n")
 list(tickerList)
 
 for i in range(len(tickerList)):
-    URL = "https://query1.finance.yahoo.com/v7/finance/download/" + tickerList[i] + "?period1=" + str(timeStart) + "&period2=" + str(timeEnd) + "&interval=1d&events=history&includeAdjustedClose=true"
-    print("Retrieving " + tickerList[i] + " from " + URL + "\n")
+    try:
+        URL = "https://query1.finance.yahoo.com/v7/finance/download/" + tickerList[i] + "?period1=" + str(timeStart) + "&period2=" + str(timeEnd) + "&interval=1d&events=history&includeAdjustedClose=true"
+        print("Fetching " + tickerList[i] + " from " + URL + "\n")
 
-    if not os.path.exists('./temp'):
-        os.makedirs('./temp')
+        if not os.path.exists('./temp'):
+            os.makedirs('./temp')
 
-    urlretrieve(URL, "./temp/" + tickerList[i] + ".csv")
+        urlretrieve(URL, "./temp/" + tickerList[i] + ".csv")
+    except:
+        print("Error Fetching Ticker \'" + tickerList[i] + "\'\n")
