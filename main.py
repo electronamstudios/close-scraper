@@ -3,5 +3,17 @@
 #                                                       |
 #                                       change that for the wanted ticker
 
-import requests, datetime
+import requests, datetime, urllib
 from bs4 import BeautifulSoup
+
+timeStart = "" # unix timecode
+timeEnd = "" # unix timecode
+
+tickerCount = int(input("How many tickers do you want: "))
+tickerList = []
+
+for i in range(tickerCount):
+    ticker = input("Enter ticker name: ").upper()
+    tickerList.append(ticker)
+
+print(tickerList)
