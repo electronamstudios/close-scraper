@@ -1,7 +1,10 @@
 import os
+import pandas as pd
 import time
 import datetime
 from urllib.request import urlretrieve
+
+# ------------------------------------ Setup
 
 timeStart = int(time.mktime(datetime.datetime.strptime(input("Starting Date (%d/%m/%y): "), "%d/%m/%Y").timetuple()))
 timeEnd = int(time.mktime(datetime.datetime.strptime(input("Ending Date (%d/%m/%y): "), "%d/%m/%Y").timetuple()))
@@ -15,6 +18,7 @@ for i in range(tickerCount):
 
 print("\nGenerating URLs for " + str(tickerList) + "\n")
 
+# ------------------------------------ Fetch Data
 for i in range(len(tickerList)):
     try:
         URL = "https://query1.finance.yahoo.com/v7/finance/download/" + tickerList[i] + "?period1=" + str(timeStart) + "&period2=" + str(timeEnd) + "&interval=1d&events=history&includeAdjustedClose=true"
