@@ -5,7 +5,6 @@ import datetime
 from urllib.request import urlretrieve
 
 # ------------------------------------ Setup
-
 timeStart = int(time.mktime(datetime.datetime.strptime(input("Starting Date (%d/%m/%y): "), "%d/%m/%Y").timetuple()))
 timeEnd = int(time.mktime(datetime.datetime.strptime(input("Ending Date (%d/%m/%y): "), "%d/%m/%Y").timetuple()))
 
