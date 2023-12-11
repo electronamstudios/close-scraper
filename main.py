@@ -10,7 +10,7 @@ tickerCount = int(input("\nHow many tickers do you want: "))
 tickerList = []
 
 for i in range(tickerCount):
-    ticker = input("Ticker name: ").upper()
+    ticker = input("Ticker: ").upper()
     tickerList.append(ticker)
 
 print("\nGenerating URLs for " + str(tickerList) + "\n")
