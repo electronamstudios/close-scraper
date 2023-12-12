@@ -62,9 +62,14 @@ def pivotData(combinedDataframe, valueType):
         valueType = "Adj Close"
     elif valueType == "Close":
         valueType = "Close"
-
-    # Pivot the DataFrame so 'Ticker' becomes the columns and valueType becomes the row corresponding to the ticker
-    pivotDataframe = combinedDataframe.pivot(index='Date', columns='Ticker', values=valueType)
+    
+    try:
+        # Pivot the DataFrame so 'Ticker' becomes the columns and valueType becomes the row corresponding to the ticker
+        pivotDataframe = combinedDataframe.pivot(index='Date', columns='Ticker', values=valueType)
+    except:
+        print(Fore.RED + "Error" + Style.RESET_ALL + " with valueType \'" + valueType + "\'")
+        shutil.rmtree('./temp')
+        exit()
 
     # Write the pivoted dataframe to a new csv file in /out directory
     pivotDataframe.to_csv('./out.csv')
