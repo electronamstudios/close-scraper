@@ -1,8 +1,8 @@
 # yahoo-finance-scraper
 
-Given a timeframe and tickers it returns the data from Yahoo Finance
+This script downloads .csv files from yahoo finance given a timeframe and merges the tickers you choose to show adjusted close prices or close prices.
 
-Made for a client's specifications so purpose may not apply to you
+Notice: This was made for a client's specifications so its functionality may not fit your needs.
 
 If you want to build it:
 
