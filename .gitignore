@@ -1,6 +1,7 @@
 /temp
 /dist
 /build
+/__pycache__
 
 README.txt
 *.spec
