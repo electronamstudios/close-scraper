@@ -36,7 +36,7 @@ for i in range(len(tickerList)):
     except:
         print(Fore.RED + "Error" + Style.RESET_ALL + " Fetching Ticker \'" + tickerList[i] + "\'\n")
 
-print(Fore.BLUE + "Merging" + Style.RESET_ALL  " .csv files...")
+print(Fore.BLUE + "Merging" + Style.RESET_ALL + " .csv files...")
 
 # ------------------------------------ Merge Data
 
