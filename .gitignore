@@ -1,2 +1,6 @@
-/temp/
+/temp
+/dist
+/build
+
+*.spec
 out.*
