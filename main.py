@@ -3,7 +3,7 @@ import glob
 import time
 import shutil
 import datetime
-import datafunctions as ff
+import datafunctions as df
 from colorama import Fore, Style
 
 # ------------------------------------ Setup
@@ -20,20 +20,20 @@ for i in range(tickerCount):
 
 print("\nGenerating URLs for " + str(tickerList) + "\n")
 for i in range(tickerCount):
-    ff.fetchData(tickerList[i], timeStart, timeEnd)
+    df.fetchData(tickerList[i], timeStart, timeEnd)
 
 # ------------------------------------ Merge Data
 
 # Get the csv files in the /temp directory
 csv_files = glob.glob('./temp/*.csv')
 
-combinedDataframe = ff.mergeData(csv_files)
+combinedDataframe = df.mergeData(csv_files)
 
 closeType = input("Enter 'Adj' or 'Close' to choose the type of value you want to see: ")
 
 print("\n" + Fore.BLUE + "Merging" + Style.RESET_ALL + " .csv files...")
 
-ff.pivotData(combinedDataframe, closeType)
+df.pivotData(combinedDataframe, closeType)
 
 if os.path.exists('./temp'):
     shutil.rmtree('./temp')
