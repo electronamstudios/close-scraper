@@ -57,17 +57,17 @@ def mergeData(csv_files):
 
     return combinedDataframe
 
-def pivotData(combinedDataframe, valueType):
-    if valueType == "Adj":
-        valueType = "Adj Close"
-    elif valueType == "Close":
-        valueType = "Close"
+def pivotData(combinedDataframe, closeType):
+    if closeType == "Adj":
+        closeType = "Adj Close"
+    elif closeType == "Close":
+        closeType = "Close"
     
     try:
-        # Pivot the DataFrame so 'Ticker' becomes the columns and valueType becomes the row corresponding to the ticker
-        pivotDataframe = combinedDataframe.pivot(index='Date', columns='Ticker', values=valueType)
+        # Pivot the DataFrame so 'Ticker' becomes the columns and closeType becomes the row corresponding to the ticker
+        pivotDataframe = combinedDataframe.pivot(index='Date', columns='Ticker', values=closeType)
     except:
-        print(Fore.RED + "Error" + Style.RESET_ALL + " with valueType \'" + valueType + "\'")
+        print(Fore.RED + "Error" + Style.RESET_ALL + " with closeType \'" + closeType + "\'")
         shutil.rmtree('./temp')
         exit()
 
@@ -84,11 +84,11 @@ csv_files = glob.glob('./temp/*.csv')
 
 combinedDataframe = mergeData(csv_files)
 
-valueType = input("Enter 'Adj' or 'Close' to choose the type of value you want to see: ")
+closeType = input("Enter 'Adj' or 'Close' to choose the type of value you want to see: ")
 
 print("\n" + Fore.BLUE + "Merging" + Style.RESET_ALL + " .csv files...")
 
-pivotData(combinedDataframe, valueType)
+pivotData(combinedDataframe, closeType)
 
 if os.path.exists('./temp'):
     shutil.rmtree('./temp')
