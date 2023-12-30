@@ -4,6 +4,7 @@ import time
 import shutil
 import datetime
 import datafunctions as df
+from tkinter import filedialog
 from colorama import Fore, Style
 
 # ------------------------------------ Setup
@@ -11,16 +12,15 @@ from colorama import Fore, Style
 timeStart = int(time.mktime(datetime.datetime.strptime(input("Starting Date (%d/%m/%y): "), "%d/%m/%Y").timetuple()))
 timeEnd = int(time.mktime(datetime.datetime.strptime(input("Ending Date (%d/%m/%y): "), "%d/%m/%Y").timetuple()))
 
-tickerCount = int(input("\nHow many tickers do you want: "))
-tickerList = []
+print("\nSelect tab-delimited text file with tickers")
 
-for i in range(tickerCount):
-    ticker = input("Ticker: ").upper()
-    tickerList.append(ticker)
+ticker_filename = filedialog.askopenfilename(filetypes=[("Text files", "*.txt")])
+with open(ticker_filename, 'r') as file:
+    tickerList = [line.strip().upper() for line in file if line.strip() != '']
 
 print("\nGenerating URLs for " + str(tickerList) + "\n")
-for i in range(tickerCount):
-    df.fetchData(tickerList[i], timeStart, timeEnd)
+for ticker in tickerList:
+    df.fetchData(ticker, timeStart, timeEnd)
 
 # ------------------------------------ Merge Data
 
@@ -39,3 +39,5 @@ if os.path.exists('./temp'):
     shutil.rmtree('./temp')
 
 print("\n" + Fore.GREEN + "Finished!" + Style.RESET_ALL + " Output saved to ./out.csv \n")
+
+os.system('start excel /x /r ./out.csv')
