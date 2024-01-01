@@ -2,7 +2,7 @@ import os
 import shutil
 import pandas as pd
 from urllib.request import urlretrieve
-from colorama import Fore, Style
+# from colorama import Fore, Style
 
 def fetchData(ticker: str, timeStart, timeEnd):
     try:
@@ -13,9 +13,11 @@ def fetchData(ticker: str, timeStart, timeEnd):
             os.makedirs('./temp')
 
         urlretrieve(URL, "./temp/" + ticker + ".csv")
-        print(Fore.GREEN + "Success" + Style.RESET_ALL + " Fetching " + ticker + "\n" )
+        # print(Fore.GREEN + "Success" + Style.RESET_ALL + " Fetching " + ticker + "\n" )
+        print("SUCCESS" + " Fetching " + ticker + "\n" )
     except:
-        print(Fore.RED + "Error" + Style.RESET_ALL + " Fetching Ticker \'" + ticker + "\'\n")
+        # print(Fore.RED + "Error" + Style.RESET_ALL + " Fetching Ticker \'" + ticker + "\'\n")
+        print("ERROR" + " Fetching Ticker \'" + ticker + "\'\n")
 
 def mergeData(csv_files):
     dataframeList = []
@@ -47,7 +49,8 @@ def pivotData(combinedDataframe, closeType):
         # Pivot the DataFrame so 'Ticker' becomes the columns and closeType becomes the row corresponding to the ticker
         pivotDataframe = combinedDataframe.pivot(index='Date', columns='Ticker', values=closeType)
     except:
-        print(Fore.RED + "Error" + Style.RESET_ALL + " with closeType \'" + closeType + "\'")
+        # print(Fore.RED + "Error" + Style.RESET_ALL + " with closeType \'" + closeType + "\'")
+        print("Error" + " with closeType \'" + closeType + "\'")
         shutil.rmtree('./temp')
         exit()
     # Write the pivoted dataframe to a new csv file in /out directory

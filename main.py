@@ -5,7 +5,7 @@ import shutil
 import datetime
 import datafunctions as df
 from tkinter import filedialog
-from colorama import Fore, Style
+# from colorama import Fore, Style
 
 # ------------------------------------ Setup
 
@@ -32,13 +32,16 @@ combinedDataframe = df.mergeData(csv_files)
 
 closeType = input("Enter 'Adj' or 'Close' to choose the type of value you want to see: ")
 
-print("\n" + Fore.BLUE + "Merging" + Style.RESET_ALL + " .csv files...")
+# print("\n" + Fore.BLUE + "Merging" + Style.RESET_ALL + " .csv files...")
+print("\n" + "Merging" + " .csv files...")
 
 df.pivotData(combinedDataframe, closeType)
 
 if os.path.exists('./temp'):
     shutil.rmtree('./temp')
 
-print("\n" + Fore.GREEN + "Finished!" + Style.RESET_ALL + " Output saved to ./out.csv \n")
+# print("\n" + Fore.GREEN + "Finished!" + Style.RESET_ALL + " Output saved to ./out.csv \n")
+print("\n" + "Finished!" + " Output saved to ./out.csv \n")
 
+print("\nOpening Excel...")
 os.system('start excel /x /r ./out.csv')
