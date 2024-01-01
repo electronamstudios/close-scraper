@@ -1,8 +1,18 @@
 import os
 import shutil
+import datetime
 import pandas as pd
 from urllib.request import urlretrieve
 # from colorama import Fore, Style
+
+def get_time(prompt):
+    while True:
+        date_str = input(prompt)
+        try:
+            epoch_time = int(datetime.datetime.strptime(date_str, "%d/%m/%Y").timestamp())
+            return epoch_time
+        except ValueError:
+            print("Invalid date format. Please try again using the format dd/mm/yyyy.")
 
 def fetchData(ticker: str, timeStart, timeEnd):
     try:

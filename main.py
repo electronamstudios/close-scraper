@@ -2,15 +2,18 @@ import os
 import glob
 import time
 import shutil
-import datetime
 import datafunctions as df
 from tkinter import filedialog
 # from colorama import Fore, Style
 
 # ------------------------------------ Setup
 
-timeStart = int(time.mktime(datetime.datetime.strptime(input("Starting Date (%d/%m/%y): "), "%d/%m/%Y").timetuple()))
-timeEnd = int(time.mktime(datetime.datetime.strptime(input("Ending Date (%d/%m/%y): "), "%d/%m/%Y").timetuple()))
+timeStart = df.get_time("Starting Date (dd/mm/yyyy): ")
+while True:
+    timeEnd = df.get_time("Ending Date (dd/mm/yyyy): ")
+    if timeEnd > timeStart:
+        break
+    print("Ending date must be after starting date. Please try again.")
 
 print("\nSelect tab-delimited text file with tickers")
 
@@ -41,7 +44,7 @@ if os.path.exists('./temp'):
     shutil.rmtree('./temp')
 
 # print("\n" + Fore.GREEN + "Finished!" + Style.RESET_ALL + " Output saved to ./out.csv \n")
-print("\n" + "Finished!" + " Output saved to ./out.csv \n")
+print("\n" + "Finished!" + " Output saved to ./out.csv")
 
 print("\nOpening Excel...")
 os.system('start excel /x /r ./out.csv')
