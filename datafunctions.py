@@ -51,9 +51,9 @@ def mergeData(csv_files):
     return combinedDataframe
 
 def pivotData(combinedDataframe, closeType):
-    if closeType == "Adj":
+    if closeType == "a":
         closeType = "Adj Close"
-    elif closeType == "Close":
+    elif closeType == "c":
         closeType = "Close"
     try:
         # Pivot the DataFrame so 'Ticker' becomes the columns and closeType becomes the row corresponding to the ticker
@@ -63,5 +63,12 @@ def pivotData(combinedDataframe, closeType):
         print("Error" + " with closeType \'" + closeType + "\'")
         shutil.rmtree('./temp')
         exit()
+    
+    if closeType == "Adj Close": closeType = "adj-close"
+    elif closeType == "Close": closeType = "close"
+
     # Write the pivoted dataframe to a new csv file in /out directory
-    pivotDataframe.to_csv('./out.csv')
+    pivotDataframe.to_csv('./'+ closeType + '-output.csv')
+
+    print("\nOpening Excel...")
+    os.system('start excel /x /r ./' + closeType + '-output.csv')

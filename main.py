@@ -33,7 +33,7 @@ csv_files = glob.glob('./temp/*.csv')
 
 combinedDataframe = df.mergeData(csv_files)
 
-closeType = input("Enter 'Adj' or 'Close' to choose the type of value you want to see: ")
+closeType = input("Enter 'a' or 'c' to choose adjusted close or close: ")
 
 # print("\n" + Fore.BLUE + "Merging" + Style.RESET_ALL + " .csv files...")
 print("\n" + "Merging" + " .csv files...")
@@ -44,7 +44,4 @@ if os.path.exists('./temp'):
     shutil.rmtree('./temp')
 
 # print("\n" + Fore.GREEN + "Finished!" + Style.RESET_ALL + " Output saved to ./out.csv \n")
-print("\n" + "Finished!" + " Output saved to ./out.csv")
-
-print("\nOpening Excel...")
-os.system('start excel /x /r ./out.csv')
+print("\n" + "Finished!")
