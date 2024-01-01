@@ -7,7 +7,7 @@ from colorama import Fore, Style
 def fetchData(ticker: str, timeStart, timeEnd):
     try:
         URL = "https://query1.finance.yahoo.com/v7/finance/download/" + ticker + "?period1=" + str(timeStart) + "&period2=" + str(timeEnd) + "&interval=1d&events=history&includeAdjustedClose=true"
-        print(Fore.BLUE + "Fetching " + Style.RESET_ALL + ticker + " from " + URL + "\n")
+        # print(Fore.BLUE + "Fetching " + Style.RESET_ALL + ticker + " from " + URL + "\n")
 
         if not os.path.exists('./temp'):
             os.makedirs('./temp')

@@ -18,8 +18,9 @@ ticker_filename = filedialog.askopenfilename(filetypes=[("Text files", "*.txt")]
 with open(ticker_filename, 'r') as file:
     tickerList = [line.strip().upper() for line in file if line.strip() != '']
 
-print("\nGenerating URLs for " + str(tickerList) + "\n")
-for ticker in tickerList:
+print("\nGenerating URLs for " + str(len(tickerList)) + " tickers.\n")
+for index, ticker in enumerate(tickerList, start=1):
+    print(f"Fetching data for ticker {index} of {len(tickerList)}: {ticker}")
     df.fetchData(ticker, timeStart, timeEnd)
 
 # ------------------------------------ Merge Data
