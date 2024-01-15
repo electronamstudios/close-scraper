@@ -38,7 +38,7 @@ closeType = input("Enter 'a' or 'c' to choose adjusted close or close: ")
 # print("\n" + Fore.BLUE + "Merging" + Style.RESET_ALL + " .csv files...")
 print("\n" + "Merging" + " .csv files...")
 
-df.pivotData(combinedDataframe, closeType)
+df.pivotData(combinedDataframe, closeType, ticker_filename.strip('.txt'))
 
 if os.path.exists('./temp'):
     shutil.rmtree('./temp')

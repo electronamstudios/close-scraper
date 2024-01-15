@@ -1,6 +1,7 @@
 import os
 import shutil
 import datetime
+import subprocess
 import pandas as pd
 from urllib.request import urlretrieve
 # from colorama import Fore, Style
@@ -50,7 +51,7 @@ def mergeData(csv_files):
 
     return combinedDataframe
 
-def pivotData(combinedDataframe, closeType):
+def pivotData(combinedDataframe, closeType, inputFileName):
     if closeType == "a":
         closeType = "Adj Close"
     elif closeType == "c":
@@ -58,9 +59,8 @@ def pivotData(combinedDataframe, closeType):
     try:
         # Pivot the DataFrame so 'Ticker' becomes the columns and closeType becomes the row corresponding to the ticker
         pivotDataframe = combinedDataframe.pivot(index='Date', columns='Ticker', values=closeType)
-    except:
-        # print(Fore.RED + "Error" + Style.RESET_ALL + " with closeType \'" + closeType + "\'")
-        print("Error" + " with closeType \'" + closeType + "\'")
+    except KeyError:
+        print("Error with closeType '{}'".format(closeType))
         shutil.rmtree('./temp')
         exit()
     
@@ -68,7 +68,8 @@ def pivotData(combinedDataframe, closeType):
     elif closeType == "Close": closeType = "close"
 
     # Write the pivoted dataframe to a new csv file in /out directory
-    pivotDataframe.to_csv('./'+ closeType + '-output.csv')
+    outputFileName = '{}-{}-output.csv'.format(inputFileName, closeType)
+    pivotDataframe.to_csv(outputFileName)
 
     print("\nOpening Excel...")
-    os.system('start excel /x /r ./' + closeType + '-output.csv')
+    subprocess.Popen(['start', 'excel', '/x', '/r', outputFileName], shell=True)
