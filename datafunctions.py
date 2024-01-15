@@ -52,24 +52,24 @@ def mergeData(csv_files):
     return combinedDataframe
 
 def pivotData(combinedDataframe, closeType, inputFileName):
-    if closeType == "a":
-        closeType = "Adj Close"
-    elif closeType == "c":
-        closeType = "Close"
-    try:
-        # Pivot the DataFrame so 'Ticker' becomes the columns and closeType becomes the row corresponding to the ticker
-        pivotDataframe = combinedDataframe.pivot(index='Date', columns='Ticker', values=closeType)
-    except KeyError:
-        print("Error with closeType '{}'".format(closeType))
-        shutil.rmtree('./temp')
-        exit()
+    while True:
+        if closeType == "a":
+            closeType = "Adj Close"
+        elif closeType == "c":
+            closeType = "Close"
+        try:
+            # Pivot the DataFrame so 'Ticker' becomes the columns and closeType becomes the row corresponding to the ticker
+            pivotDataframe = combinedDataframe.pivot(index='Date', columns='Ticker', values=closeType)
+            break
+        except KeyError:
+            print("Error with closeType '{}'".format(closeType))
     
     if closeType == "Adj Close": closeType = "adj-close"
     elif closeType == "Close": closeType = "close"
 
     # Write the pivoted dataframe to a new csv file in /out directory
-    outputFileName = '{}-{}-output.csv'.format(inputFileName, closeType)
-    pivotDataframe.to_csv(outputFileName)
+    outputFileName = '{}-{}-output.csv'.format(inputFileName.strip('.txt'), closeType)
+    pivotDataframe.to_csv(os.path.dirname(inputFileName), outputFileName)
 
     print("\nOpening Excel...")
     subprocess.Popen(['start', 'excel', '/x', '/r', outputFileName], shell=True)
