@@ -53,9 +53,9 @@ def mergeData(csv_files):
 
 def pivotData(combinedDataframe, closeType, inputFileName):
     while True:
-        if closeType == "a":
+        if closeType.lower() == "a":
             closeType = "Adj Close"
-        elif closeType == "c":
+        elif closeType.lower() == "c":
             closeType = "Close"
         try:
             # Pivot the DataFrame so 'Ticker' becomes the columns and closeType becomes the row corresponding to the ticker
@@ -64,12 +64,9 @@ def pivotData(combinedDataframe, closeType, inputFileName):
         except KeyError:
             print("Error with closeType '{}'".format(closeType))
     
-    if closeType == "Adj Close": closeType = "adj-close"
-    elif closeType == "Close": closeType = "close"
-
-    # Write the pivoted dataframe to a new csv file in /out directory
-    outputFileName = '{}-{}-output.csv'.format(inputFileName.strip('.txt'), closeType)
-    pivotDataframe.to_csv(os.path.dirname(inputFileName), outputFileName)
+    # Write the pivoted dataframe to a new csv file in the same directory as the input file
+    outputFileName = '{}-{}-output.csv'.format(os.path.splitext(inputFileName)[0], closeType.lower().replace(" ", "-"))
+    pivotDataframe.to_csv(outputFileName)
 
     print("\nOpening Excel...")
     subprocess.Popen(['start', 'excel', '/x', '/r', outputFileName], shell=True)
