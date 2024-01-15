@@ -6,5 +6,5 @@
 
 README.txt
 *.spec
-out.*
 testing.txt
+*.csv
