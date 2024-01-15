@@ -1,6 +1,5 @@
 import os
 import glob
-import time
 import shutil
 import datafunctions as df
 from tkinter import filedialog
