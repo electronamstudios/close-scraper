@@ -3,6 +3,7 @@ import glob
 import shutil
 import datafunctions as df
 from tkinter import filedialog
+
 # from colorama import Fore, Style
 
 # ------------------------------------ Setup
@@ -17,8 +18,8 @@ while True:
 print("\nSelect tab-delimited text file with tickers")
 
 ticker_filename = filedialog.askopenfilename(filetypes=[("Text files", "*.txt")])
-with open(ticker_filename, 'r') as file:
-    tickerList = [line.strip().upper() for line in file if line.strip() != '']
+with open(ticker_filename, "r") as file:
+    tickerList = [line.strip().upper() for line in file if line.strip() != ""]
 
 print("\nGenerating URLs for " + str(len(tickerList)) + " tickers.\n")
 for index, ticker in enumerate(tickerList, start=1):
@@ -28,7 +29,7 @@ for index, ticker in enumerate(tickerList, start=1):
 # ------------------------------------ Merge Data
 
 # Get the csv files in the /temp directory
-csv_files = glob.glob('./temp/*.csv')
+csv_files = glob.glob("./temp/*.csv")
 
 combinedDataframe = df.mergeData(csv_files)
 
@@ -39,8 +40,8 @@ print("\n" + "Merging" + " .csv files...")
 
 df.pivotData(combinedDataframe, closeType, ticker_filename)
 
-if os.path.exists('./temp'):
-    shutil.rmtree('./temp')
+if os.path.exists("./temp"):
+    shutil.rmtree("./temp")
 
 # print("\n" + Fore.GREEN + "Finished!" + Style.RESET_ALL + " Output saved to ./out.csv \n")
 print("\n" + "Finished!")

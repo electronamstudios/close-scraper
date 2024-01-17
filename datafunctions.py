@@ -2,33 +2,48 @@ import os
 import shutil
 import datetime
 import subprocess
+from uu import Error
 import pandas as pd
 from urllib.request import urlretrieve
+
 # from colorama import Fore, Style
+
 
 def get_time(prompt):
     while True:
         date_str = input(prompt)
         try:
-            epoch_time = int(datetime.datetime.strptime(date_str, "%d/%m/%Y").timestamp())
+            epoch_time = int(
+                datetime.datetime.strptime(date_str, "%d/%m/%Y").timestamp()
+            )
             return epoch_time
         except ValueError:
             print("Invalid date format. Please try again using the format dd/mm/yyyy.")
 
+
 def fetchData(ticker: str, timeStart, timeEnd):
     try:
-        URL = "https://query1.finance.yahoo.com/v7/finance/download/" + ticker + "?period1=" + str(timeStart) + "&period2=" + str(timeEnd) + "&interval=1d&events=history&includeAdjustedClose=true"
+        URL = (
+            "https://query1.finance.yahoo.com/v7/finance/download/"
+            + ticker
+            + "?period1="
+            + str(timeStart)
+            + "&period2="
+            + str(timeEnd)
+            + "&interval=1d&events=history&includeAdjustedClose=true"
+        )
         # print(Fore.BLUE + "Fetching " + Style.RESET_ALL + ticker + " from " + URL + "\n")
 
-        if not os.path.exists('./temp'):
-            os.makedirs('./temp')
+        if not os.path.exists("./temp"):
+            os.makedirs("./temp")
 
         urlretrieve(URL, "./temp/" + ticker + ".csv")
         # print(Fore.GREEN + "Success" + Style.RESET_ALL + " Fetching " + ticker + "\n" )
-        print("SUCCESS" + " Fetching " + ticker + "\n" )
-    except:
+        print("SUCCESS" + " Fetching " + ticker + "\n")
+    except Error:
         # print(Fore.RED + "Error" + Style.RESET_ALL + " Fetching Ticker \'" + ticker + "\'\n")
-        print("ERROR" + " Fetching Ticker \'" + ticker + "\'\n")
+        print("ERROR" + " Fetching Ticker '" + ticker + "'\n")
+
 
 def mergeData(csv_files):
     dataframeList = []
@@ -41,7 +56,7 @@ def mergeData(csv_files):
         ticker_name = os.path.splitext(os.path.basename(filename))[0]
 
         # Insert the 'Ticker' column at the second position of the dataframe
-        dataframe.insert(1, 'Ticker', ticker_name)
+        dataframe.insert(1, "Ticker", ticker_name)
 
         # Append the dataframe to the list
         dataframeList.append(dataframe)
@@ -51,6 +66,7 @@ def mergeData(csv_files):
 
     return combinedDataframe
 
+
 def pivotData(combinedDataframe, closeType, inputFileName):
     while True:
         if closeType.lower() == "a":
@@ -59,14 +75,21 @@ def pivotData(combinedDataframe, closeType, inputFileName):
             closeType = "Close"
         try:
             # Pivot the DataFrame so 'Ticker' becomes the columns and closeType becomes the row corresponding to the ticker
-            pivotDataframe = combinedDataframe.pivot(index='Date', columns='Ticker', values=closeType)
+            pivotDataframe = combinedDataframe.pivot(
+                index="Date", columns="Ticker", values=closeType
+            )
             break
         except KeyError:
             print("Error with closeType '{}'".format(closeType))
-    
-    # Write the pivoted dataframe to a new csv file in the same directory as the input file
-    outputFileName = '{}-{}-output.csv'.format(os.path.splitext(inputFileName)[0], closeType.lower().replace(" ", "-"))
-    pivotDataframe.to_csv(outputFileName)
+
+    # Write the pivoted dataframe to a new csv file in the directory of the input file
+    inputDirectory = os.path.dirname(inputFileName)
+    outputFileName = "{}-{}-output.csv".format(
+        os.path.splitext(os.path.basename(inputFileName))[0],
+        closeType.lower().replace(" ", "-"),
+    )
+    outputPath = os.path.join(inputDirectory, outputFileName)
+    pivotDataframe.to_csv(outputPath)
 
     print("\nOpening Excel...")
-    subprocess.Popen(['start', 'excel', '/x', '/r', outputFileName], shell=True)
+    subprocess.Popen(["start", "excel", "/x", "/r", outputPath], shell=True)
