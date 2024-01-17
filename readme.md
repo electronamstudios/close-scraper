@@ -7,4 +7,4 @@ Notice: This was made for a client's specifications so its functionality may not
 If you want to build it to an executable:
 
 - Install pyinstaller: `pip install pyinstaller`
-- Run the script: `pyinstaller --onefile main.py`
+- Run: `pyinstaller --onefile main.py`
