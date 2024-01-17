@@ -6,8 +6,6 @@ from uu import Error
 import pandas as pd
 from urllib.request import urlretrieve
 
-# from colorama import Fore, Style
-
 
 def get_time(prompt):
     while True:
@@ -32,17 +30,14 @@ def fetchData(ticker: str, timeStart, timeEnd):
             + str(timeEnd)
             + "&interval=1d&events=history&includeAdjustedClose=true"
         )
-        # print(Fore.BLUE + "Fetching " + Style.RESET_ALL + ticker + " from " + URL + "\n")
 
         if not os.path.exists("./temp"):
             os.makedirs("./temp")
 
-        urlretrieve(URL, "./temp/" + ticker + ".csv")
-        # print(Fore.GREEN + "Success" + Style.RESET_ALL + " Fetching " + ticker + "\n" )
-        print("SUCCESS" + " Fetching " + ticker + "\n")
-    except Error:
-        # print(Fore.RED + "Error" + Style.RESET_ALL + " Fetching Ticker \'" + ticker + "\'\n")
-        print("ERROR" + " Fetching Ticker '" + ticker + "'\n")
+        urlretrieve(URL, f"./temp/{ticker}.csv")
+        print(f"SUCCESS: Data fetched for {ticker}\n")
+    except Exception as e:
+        print(f"ERROR: Could not fetch data for {ticker} - {e}\n")
 
 
 def mergeData(csv_files):
