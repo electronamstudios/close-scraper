@@ -1,4 +1,4 @@
-import os
+from os import path, makedirs 
 import shutil
 import datetime
 import subprocess
@@ -62,28 +62,41 @@ def mergeData(csv_files):
     return combinedDataframe
 
 
-def pivotData(combinedDataframe, closeType, inputFileName):
-    while True:
-        if closeType.lower() == "a":
-            closeType = "Adj Close"
-        elif closeType.lower() == "c":
-            closeType = "Close"
-        try:
-            # Pivot the DataFrame so 'Ticker' becomes the columns and closeType becomes the row corresponding to the ticker
-            pivotDataframe = combinedDataframe.pivot(
-                index="Date", columns="Ticker", values=closeType
-            )
-            break
-        except KeyError:
-            print("Error with closeType '{}'".format(closeType))
+def pivotData(combinedDataframe, closeType, inputFileName, dateOrder):
+    if closeType.lower() == "a":
+        closeType = "Adj Close"
+    elif closeType.lower() == "c":
+        closeType = "Close"
+    else:
+        print(f"Invalid closeType: {closeType}")
+        return
+
+    # Convert 'Date' column to datetime if it's not already
+    combinedDataframe['Date'] = pd.to_datetime(combinedDataframe['Date'])
+
+    # Sort by date according to dateOrder
+    if dateOrder.lower() == 'a':
+        combinedDataframe = combinedDataframe.sort_values(by='Date', ascending=True)
+    elif dateOrder.lower() == 'd':
+        combinedDataframe = combinedDataframe.sort_values(by='Date', ascending=False)
+    else:
+        print(f"Invalid dateOrder: {dateOrder}")
+        return
+
+    # Pivot the DataFrame so 'Ticker' becomes the columns and closeType becomes the row corresponding to the ticker
+    try:
+        pivotDataframe = combinedDataframe.pivot(index="Date", columns="Ticker", values=closeType)
+    except KeyError:
+        print(f"Error with closeType '{closeType}'")
+        return
 
     # Write the pivoted dataframe to a new csv file in the directory of the input file
-    inputDirectory = os.path.dirname(inputFileName)
+    inputDirectory = path.dirname(inputFileName)
     outputFileName = "{}-{}-output.csv".format(
-        os.path.splitext(os.path.basename(inputFileName))[0],
+        path.splitext(path.basename(inputFileName))[0],
         closeType.lower().replace(" ", "-"),
     )
-    outputPath = os.path.join(inputDirectory, outputFileName)
+    outputPath = path.join(inputDirectory, outputFileName)
     pivotDataframe.to_csv(outputPath)
 
     print("\nOpening Excel...")

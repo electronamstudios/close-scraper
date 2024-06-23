@@ -1,6 +1,6 @@
-import os
+from os import path
 import glob
-import shutil
+from shutil import rmtree
 import datafunctions as df
 from tkinter import filedialog
 
@@ -33,12 +33,24 @@ csv_files = glob.glob("./temp/*.csv")
 
 combinedDataframe = df.mergeData(csv_files)
 
-closeType = input("Enter 'a' or 'c' to choose adjusted close or close: ")
+# Validate dateOrder input
+while True:
+    dateOrder = input("Enter 'a' or 'd' to choose ascending or descending order: ")
+    if dateOrder.lower() in ['a', 'd']:
+        break
+    print("Invalid input. Please enter 'a' for ascending or 'd' for descending order.")
+
+# Validate closeType input
+while True:
+    closeType = input("Enter 'a' or 'c' to choose adjusted close or close: ")
+    if closeType.lower() in ['a', 'c']:
+        break
+    print("Invalid input. Please enter 'a' for adjusted close or 'c' for close.")
 
 # print("\n" + Fore.BLUE + "Merging" + Style.RESET_ALL + " .csv files...")
 print("\n" + "Merging" + " .csv files...")
 
-df.pivotData(combinedDataframe, closeType, ticker_filename)
+df.pivotData(combinedDataframe, closeType, ticker_filename, dateOrder)
 
 if os.path.exists("./temp"):
     shutil.rmtree("./temp")
