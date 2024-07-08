@@ -1,8 +1,9 @@
-from os import path
+import os
 import glob
-from shutil import rmtree
+import shutil
 import datafunctions as df
 from tkinter import filedialog
+import concurrent.futures
 
 # from colorama import Fore, Style
 
@@ -22,9 +23,14 @@ with open(ticker_filename, "r") as file:
     tickerList = [line.strip().upper() for line in file if line.strip() != ""]
 
 print("\nGenerating URLs for " + str(len(tickerList)) + " tickers.\n")
-for index, ticker in enumerate(tickerList, start=1):
-    print(f"Fetching data for ticker {index} of {len(tickerList)}: {ticker}")
+
+# Multithreaded data fetching
+def fetch_ticker_data(ticker):
+    print(f"Fetching data for ticker: {ticker}")
     df.fetchData(ticker, timeStart, timeEnd)
+
+with concurrent.futures.ThreadPoolExecutor() as executor:
+    executor.map(fetch_ticker_data, tickerList)
 
 # ------------------------------------ Merge Data
 
@@ -35,7 +41,7 @@ combinedDataframe = df.mergeData(csv_files)
 
 # Validate dateOrder input
 while True:
-    dateOrder = input("Enter 'a' or 'd' to choose ascending or descending order: ")
+    dateOrder = input("\nEnter 'a' or 'd' to choose ascending or descending order: ")
     if dateOrder.lower() in ['a', 'd']:
         break
     print("Invalid input. Please enter 'a' for ascending or 'd' for descending order.")

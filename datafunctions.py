@@ -1,4 +1,4 @@
-from os import path, makedirs 
+import os
 import shutil
 import datetime
 import subprocess
@@ -35,9 +35,9 @@ def fetchData(ticker: str, timeStart, timeEnd):
             os.makedirs("./temp")
 
         urlretrieve(URL, f"./temp/{ticker}.csv")
-        print(f"SUCCESS: Data fetched for {ticker}\n")
+        print(f"\nSUCCESS: Data fetched for {ticker}")
     except Exception as e:
-        print(f"ERROR: Could not fetch data for {ticker} - {e}\n")
+        print(f"\nERROR: Could not fetch data for {ticker} - {e}")
 
 
 def mergeData(csv_files):
@@ -71,32 +71,32 @@ def pivotData(combinedDataframe, closeType, inputFileName, dateOrder):
         print(f"Invalid closeType: {closeType}")
         return
 
-    # Convert 'Date' column to datetime if it's not already
-    combinedDataframe['Date'] = pd.to_datetime(combinedDataframe['Date'])
-
-    # Sort by date according to dateOrder
-    if dateOrder.lower() == 'a':
-        combinedDataframe = combinedDataframe.sort_values(by='Date', ascending=True)
-    elif dateOrder.lower() == 'd':
-        combinedDataframe = combinedDataframe.sort_values(by='Date', ascending=False)
-    else:
-        print(f"Invalid dateOrder: {dateOrder}")
-        return
-
-    # Pivot the DataFrame so 'Ticker' becomes the columns and closeType becomes the row corresponding to the ticker
     try:
         pivotDataframe = combinedDataframe.pivot(index="Date", columns="Ticker", values=closeType)
     except KeyError:
         print(f"Error with closeType '{closeType}'")
         return
 
+    # Convert 'Date' column to datetime if it's not already
+    pivotDataframe.index = pd.to_datetime(pivotDataframe.index)
+
+    # Sort by date in ascending order first
+    pivotDataframe = pivotDataframe.sort_index(ascending=True)
+
+    # If descending order is requested, reverse the entire DataFrame
+    if dateOrder.lower() == 'd':
+        pivotDataframe = pivotDataframe.loc[pivotDataframe.index[::-1]]
+
+    # Fill empty cells with NaN in the pivoted DataFrame
+    pivotDataframe = pivotDataframe.fillna('NaN')
+
     # Write the pivoted dataframe to a new csv file in the directory of the input file
-    inputDirectory = path.dirname(inputFileName)
+    inputDirectory = os.path.dirname(inputFileName)
     outputFileName = "{}-{}-output.csv".format(
-        path.splitext(path.basename(inputFileName))[0],
+        os.path.splitext(os.path.basename(inputFileName))[0],
         closeType.lower().replace(" ", "-"),
     )
-    outputPath = path.join(inputDirectory, outputFileName)
+    outputPath = os.path.join(inputDirectory, outputFileName)
     pivotDataframe.to_csv(outputPath)
 
     print("\nOpening Excel...")
