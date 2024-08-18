@@ -87,6 +87,14 @@ def pivotData(combinedDataframe, closeType, inputFileName, dateOrder):
     if dateOrder.lower() == 'd':
         pivotDataframe = pivotDataframe.loc[pivotDataframe.index[::-1]]
 
+    # Get the list of all tickers from the original dataframe
+    all_tickers = combinedDataframe['Ticker'].unique()
+
+    # Add missing columns and fill with NaN
+    for ticker in all_tickers:
+        if ticker not in pivotDataframe.columns:
+            pivotDataframe[ticker] = 'NaN'
+
     # Fill empty cells with NaN in the pivoted DataFrame
     pivotDataframe = pivotDataframe.fillna('NaN')
 
