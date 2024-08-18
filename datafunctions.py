@@ -72,7 +72,21 @@ def pivotData(combinedDataframe, closeType, inputFileName, dateOrder):
         return
 
     try:
+        # Get all unique tickers from the input file
+        with open(inputFileName, "r") as file:
+            all_tickers = [line.strip().upper() for line in file if line.strip() != ""]
+
+        # Create a pivot table
         pivotDataframe = combinedDataframe.pivot(index="Date", columns="Ticker", values=closeType)
+
+        # Add missing tickers as columns with NaN values
+        missing_tickers = set(all_tickers) - set(pivotDataframe.columns)
+        for ticker in missing_tickers:
+            pivotDataframe[ticker] = pd.NA
+
+        # Reorder columns to match the order in the input file
+        pivotDataframe = pivotDataframe.reindex(columns=all_tickers)
+
     except KeyError:
         print(f"Error with closeType '{closeType}'")
         return
@@ -86,14 +100,6 @@ def pivotData(combinedDataframe, closeType, inputFileName, dateOrder):
     # If descending order is requested, reverse the entire DataFrame
     if dateOrder.lower() == 'd':
         pivotDataframe = pivotDataframe.loc[pivotDataframe.index[::-1]]
-
-    # Get the list of all tickers from the original dataframe
-    all_tickers = combinedDataframe['Ticker'].unique()
-
-    # Add missing columns and fill with NaN
-    for ticker in all_tickers:
-        if ticker not in pivotDataframe.columns:
-            pivotDataframe[ticker] = 'NaN'
 
     # Fill empty cells with NaN in the pivoted DataFrame
     pivotDataframe = pivotDataframe.fillna('NaN')
